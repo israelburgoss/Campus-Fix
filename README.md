@@ -427,14 +427,6 @@ Todos los usuarios comparten la contraseña definida en `DEFAULT_PASSWORD` (tras
 
 ---
 
-## Documentación adicional
-
-- **`docs/PROGRESO.md`** — bitácora técnica completa por fases (0 a 9): decisiones,
-  archivos modificados, verificaciones y estado del plan. Útil para nuevos
-  desarrolladores que se integren al proyecto.
-
----
-
 ## Notas y limitaciones
 
 - El backend se adhiere estrictamente a la estructura de `database/` (no la modifica
