@@ -1,26 +1,56 @@
 # Campus-Fix
 
-Plataforma de gestión de **incidencias tecnológicas** para un campus universitario.
-Permite a estudiantes/usuarios reportar fallas en activos (proyectores, equipos de
-labs, etc.), a los técnicos diagnosticarlas y registrar evidencia, y a los
-administradores asignar y dar seguimiento hasta su resolución.
+> Plataforma de gestión de **incidencias tecnológicas** para un campus universitario.
 
-> Backend API REST (Node.js + Express) que integra **MySQL** (datos relacionales) y
-> **MongoDB** (diagnósticos y evidencias documentales), con autenticación **JWT** por
-> rol. El frontend es una SPA en **React + TypeScript + Vite**.
+## ¿De qué trata el proyecto?
+
+Campus-Fix es una aplicación web full-stack para gestionar el ciclo de vida de las
+**incidencias tecnológicas** dentro de un campus universitario (fallas de proyectores,
+equipos de laboratorio, redes, mobiliario técnico, etc.).
+
+El sistema diferencia tres roles con responsabilidades claras:
+
+- **Usuario / Estudiante** — reporta incidencias describiendo el problema y el activo afectado.
+- **Técnico** — recibe las incidencias que le asignan, las diagnostica, registra la
+  evidencia y las lleva al estado `Resuelta`.
+- **Administrador** — asigna incidencias a técnicos, da seguimiento y consulta reportes.
+
+Cada incidencia avanza por un flujo estricto de estados
+(`Registrada → Asignada → En proceso → Resuelta`), y la información relacional vive en
+**MySQL** mientras que los documentos de diagnóstico y evidencia viven en **MongoDB**,
+integrados por ID. El backend es una API REST (Node.js + Express) con autenticación
+**JWT** por rol; el frontend es una SPA en **React + TypeScript + Vite**.
+
+## ¿Qué problema resuelve?
+
+En un campus universitario, las fallas de equipos suelen reportarse por canales
+informales (correos, grupos de mensajería, planillas sueltas), lo que genera:
+
+- **Falta de trazabilidad** — no se sabe quién reportó, quién atiende ni cuándo se resolvió.
+- **Pérdida de conocimiento** — los diagnósticos y soluciones no quedan documentados.
+- **Asignación ineficiente** — los administradores no tienen visibilidad de la carga de
+  trabajo de cada técnico.
+- **Sin métricas** — es imposible saber cuántas incidencias hay por estado o por técnico.
+
+Campus-Fix centraliza todo en una sola plataforma: registro estructurado, asignación por
+rol, historial automático de cada cambio, diagnóstico/evidencia documental y reportes en
+tiempo real. Así se reduce el tiempo de atención, se conserva el conocimiento técnico y
+se obtienen métricas de gestión.
 
 ---
 
 ## 📚 Índice
 
+- [¿De qué trata el proyecto?](#de-qué-trata-el-proyecto)
+- [¿Qué problema resuelve?](#qué-problema-resuelve)
 - [Características](#características)
 - [Arquitectura y stack](#arquitectura-y-stack)
-- [Estructura del repositorio](#estructura-del-repositorio)
+- [Estructura del proyecto](#estructura-del-proyecto)
 - [Bases de datos](#bases-de-datos)
 - [Requisitos previos](#requisitos-previos)
-- [Instalación y configuración](#instalación-y-configuración)
+- [Manual de instalación](#manual-de-instalación)
 - [Poblamiento de datos](#poblamiento-de-datos)
-- [Ejecución](#ejecución)
+- [Manual de ejecución](#manual-de-ejecución)
 - [API REST](#api-rest)
 - [Reglas de negocio](#reglas-de-negocio)
 - [Seguridad](#seguridad)
@@ -153,14 +183,26 @@ La relación entre ambas BD es por ID: `incidencias.id_incidencia` ↔
 
 ---
 
-## Instalación y configuración
+## Manual de instalación
+
+Sigue estos pasos en orden para dejar el proyecto instalado y configurado:
+
+### 1) Clonar el repositorio
 
 ```bash
-# 1) Clonar e instalar dependencias (raíz, con workspace)
+git clone <URL_DEL_REPOSITORIO> Campus-Fix
+cd Campus-Fix
+```
+
+### 2) Instalar dependencias
+
+El proyecto es un monorepo gestionado con `pnpm` (ver `pnpm-workspace.yaml`):
+
+```bash
 pnpm install
 ```
 
-### Configurar el backend
+### 3) Configurar el backend
 
 Copia el archivo de entorno de ejemplo y completa los valores reales:
 
@@ -168,8 +210,11 @@ Copia el archivo de entorno de ejemplo y completa los valores reales:
 cp backend/.env.example backend/.env
 ```
 
-Edita `backend/.env` con tus credenciales (ver
-[Variables de entorno](#variables-de-entorno)). **Nunca commitees `backend/.env`.**
+Edita `backend/.env` con tus credenciales de base de datos, JWT y contraseña por
+defecto (ver [Variables de entorno](#variables-de-entorno)). **Nunca commitees
+`backend/.env`.**
+
+> El backend carga `backend/.env` automáticamente mediante `dotenv` al iniciar.
 
 ---
 
